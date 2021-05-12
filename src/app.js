@@ -4,9 +4,11 @@ import logger from 'morgan';
 import helmet from 'helmet';
 import cors from 'cors';
 import 'dotenv/config';
+import mongoose from 'mongoose';
 import handleErrors from './middleware/handleErrors';
 
 // routes
+import generatedDataRouter from './modules/generated-data/generated-data.routes';
 
 const app = express();
 
@@ -17,6 +19,21 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors());
 app.use(helmet());
+app.use('/api/generated-data', generatedDataRouter);
+
 app.use(handleErrors);
+
+// prueba de conexión a la base de datos
+const { MONGODB_URL } = process.env;
+console.log('mongo URI', MONGODB_URL);
+mongoose.connect(MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('Conectado a %s', MONGODB_URL);
+    console.log('Press CTRL + C to stop the process. \n');
+  })
+  .catch((err) => {
+    console.error('App starting error:', err.message);
+    process.exit(1);
+  });
 
 export default app;
