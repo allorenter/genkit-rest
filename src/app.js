@@ -9,6 +9,7 @@ import handleErrors from './middleware/handleErrors';
 
 // routes
 import generatedDataRouter from './modules/generated-data/generated-data.routes';
+import userRouter from './modules/user/user.routes';
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(cookieParser());
 app.use(cors());
 app.use(helmet());
 app.use('/api/generated-data', generatedDataRouter);
+app.use('/api/user', userRouter);
 
 app.use(handleErrors);
 
