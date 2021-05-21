@@ -8,8 +8,8 @@ router.get('/user-exists/:userName', UserController.userExists);
 
 router.post('/sign-up', UserController.signUp);
 
-router.get('/private', auth.isAuth, (req, res) => {
-  res.status(200).send({ message: 'tienes acceso' });
-});
+router.get('/check-auth', auth.isAuth, UserController.checkAuth);
+
+router.post('/sign-in', UserController.signIn);
 
 export default router;
