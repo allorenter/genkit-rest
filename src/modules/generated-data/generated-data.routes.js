@@ -1,8 +1,9 @@
 import express from 'express';
-import getPersistentData from './persistent-data.repository';
+import GeneratedDataController from './generated-data.controller';
+import auth from '../../middleware/auth';
 
 const router = express.Router();
 
-router.get('/get', async (req, res, next) => res.send({ data: await getPersistentData() }));
+router.post('/preview', auth.isAuth, GeneratedDataController.preview);
 
 export default router;

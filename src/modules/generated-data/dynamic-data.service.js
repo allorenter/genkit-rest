@@ -75,3 +75,18 @@ export const carBrand = () => {
   ];
   return brands[Math.round(Math.random() * (brands.length - 0) + 0)];
 };
+
+export const generatePropertyValue = (propertyName) => {
+  const map = {
+    mobilePhone: mobilePhone(),
+    dni: dni(),
+    randomString: randomString(),
+    randomNumber: randomNumber(),
+    creditCard: creditCard(),
+    matricula: matricula(),
+    boolean: boolean(),
+    randomDate: randomDate(),
+    carBrand: carBrand(),
+  };
+  return map[propertyName];
+};
