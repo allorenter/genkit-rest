@@ -1,9 +1,13 @@
+import fs from 'fs';
+import { v4 as uuidv4 } from 'uuid';
+import path from 'path';
+import { Parser } from 'json2csv';
 import getPersistentData from './persistent-data.repository';
 import { generatePropertyValue } from './dynamic-data.service';
 import { countDuplicates, randomNumber } from '../../utils/functions';
 import { persistentDataFields } from '../../conf';
 
-export default async (dataSchema, size) => {
+const generateData = async (dataSchema, size) => {
   // me quedo con los tipos de datos de cada propiedad
   const specifiedFields = dataSchema.map(({ type }) => type?.id);
 
@@ -49,4 +53,29 @@ export default async (dataSchema, size) => {
   }
 
   return generatedData;
+};
+
+export const preview = async (dataSchema, size) => generateData(dataSchema, size);
+
+export const generateJSON = async (dataSchema, size, filename) => {
+  const dir = path.join('generated-files', uuidv4());
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
+  }
+  const fileDir = path.join(dir, `${filename}.json`);
+  const generatedJSONData = JSON.stringify(await generateData(dataSchema, size));
+  fs.writeFileSync(fileDir, generatedJSONData);
+  return path.normalize(fileDir);
+};
+
+export const generateCSV = async (dataSchema, size, filename) => {
+  const dir = path.join('generated-files', uuidv4());
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
+  }
+  const fileDir = path.join(dir, `${filename}.csv`);
+  const parser = new Parser();
+  const generatedCSVdata = parser.parse(await generateData(dataSchema, size));
+  fs.writeFileSync(fileDir, generatedCSVdata);
+  return path.normalize(fileDir);
 };

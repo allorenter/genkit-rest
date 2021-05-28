@@ -1,6 +1,8 @@
+import dayjs from 'dayjs';
 import succesResponse from '../../utils/response';
-import generatedDataService from './generated-data.service';
+import { preview, generateJSON, generateCSV } from './generated-data.service';
 import BadRequest from '../../utils/errors/bad-request';
+import GeneratedDataModel from './generated-data.model';
 
 const validateDataSchema = (dataSchema) => {
   if (!Array.isArray(dataSchema) || dataSchema?.length < 1) {
@@ -19,12 +21,58 @@ const validateDataSchema = (dataSchema) => {
 
 exports.preview = async (req, res, next) => {
   try {
-    const { dataSchema, previewSize } = req.body;
-    const previewData = await generatedDataService(
+    const { dataSchema, size } = req.body;
+    const previewData = await preview(
       validateDataSchema(dataSchema),
-      previewSize,
+      size,
     );
     return succesResponse(res, 'Vista previa de objetos generados', { previewData });
+  } catch (err) {
+    next(err);
+    return null;
+  }
+};
+
+exports.generateJSON = async (req, res, next) => {
+  try {
+    const { dataSchema } = req.body;
+    const size = req.body.size || 10;
+    const filename = req.body.filename || 'filename';
+    const fileLocation = await generateJSON(
+      validateDataSchema(dataSchema), size, filename,
+    );
+    const log = new GeneratedDataModel({
+      date: dayjs().format(),
+      user: req.payload.userName,
+      filename,
+      fileExtension: 'json',
+      path: fileLocation,
+    });
+    log.save();
+    return res.download(fileLocation);
+  } catch (err) {
+    next(err);
+    return null;
+  }
+};
+
+exports.generateCSV = async (req, res, next) => {
+  try {
+    const { dataSchema } = req.body;
+    const size = req.body.size || 10;
+    const filename = req.body.filename || 'filename';
+    const fileLocation = await generateCSV(
+      validateDataSchema(dataSchema), size, filename,
+    );
+    const log = new GeneratedDataModel({
+      date: dayjs().format(),
+      user: req.payload.userName,
+      filename,
+      fileExtension: 'csv',
+      path: fileLocation,
+    });
+    log.save();
+    return res.download(fileLocation);
   } catch (err) {
     next(err);
     return null;

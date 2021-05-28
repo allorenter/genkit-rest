@@ -4,6 +4,10 @@ import auth from '../../middleware/auth';
 
 const router = express.Router();
 
-router.post('/preview', auth.isAuth, GeneratedDataController.preview);
+router.post('/preview', GeneratedDataController.preview);
+
+router.post('/generate-json', auth.isAuth, GeneratedDataController.generateJSON);
+
+router.post('/generate-csv', auth.isAuth, GeneratedDataController.generateCSV);
 
 export default router;
