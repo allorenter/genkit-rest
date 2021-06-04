@@ -7,7 +7,6 @@ const GeneratedDataSchema = new Schema({
   user: String,
   filename: String,
   fileExtension: String,
-  path: String,
 });
 
 export default mongoose.model('generated-data', GeneratedDataSchema);

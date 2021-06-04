@@ -57,25 +57,13 @@ const generateData = async (dataSchema, size) => {
 
 export const preview = async (dataSchema, size) => generateData(dataSchema, size);
 
-export const generateJSON = async (dataSchema, size, filename) => {
-  const dir = path.join('generated-files', uuidv4());
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
-  }
-  const fileDir = path.join(dir, `${filename}.json`);
+export const generateJSON = async (dataSchema, size) => {
   const generatedJSONData = JSON.stringify(await generateData(dataSchema, size));
-  fs.writeFileSync(fileDir, generatedJSONData);
-  return path.normalize(fileDir);
+  return generatedJSONData;
 };
 
-export const generateCSV = async (dataSchema, size, filename) => {
-  const dir = path.join('generated-files', uuidv4());
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
-  }
-  const fileDir = path.join(dir, `${filename}.csv`);
+export const generateCSV = async (dataSchema, size) => {
   const parser = new Parser();
   const generatedCSVdata = parser.parse(await generateData(dataSchema, size));
-  fs.writeFileSync(fileDir, generatedCSVdata);
-  return path.normalize(fileDir);
+  return generatedCSVdata;
 };

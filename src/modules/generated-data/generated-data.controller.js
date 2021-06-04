@@ -38,18 +38,19 @@ exports.generateJSON = async (req, res, next) => {
     const { dataSchema } = req.body;
     const size = req.body.size || 10;
     const filename = req.body.filename || 'filename';
-    const fileLocation = await generateJSON(
-      validateDataSchema(dataSchema), size, filename,
-    );
+    const fileContent = await generateJSON(validateDataSchema(dataSchema), size);
+
     const log = new GeneratedDataModel({
       date: dayjs().format(),
       user: req.payload.userName,
       filename,
       fileExtension: 'json',
-      path: fileLocation,
     });
     log.save();
-    return res.download(fileLocation);
+
+    res.setHeader('Content-disposition', `attachment; filename="${filename}.json"`);
+    res.setHeader('Content-type', 'text/json; charset=UTF-8');
+    return res.status(200).send(fileContent);
   } catch (err) {
     next(err);
     return null;
@@ -61,18 +62,19 @@ exports.generateCSV = async (req, res, next) => {
     const { dataSchema } = req.body;
     const size = req.body.size || 10;
     const filename = req.body.filename || 'filename';
-    const fileLocation = await generateCSV(
-      validateDataSchema(dataSchema), size, filename,
-    );
+    const fileContent = await generateCSV(validateDataSchema(dataSchema), size);
+
     const log = new GeneratedDataModel({
       date: dayjs().format(),
       user: req.payload.userName,
       filename,
       fileExtension: 'csv',
-      path: fileLocation,
     });
     log.save();
-    return res.download(fileLocation);
+
+    res.setHeader('Content-disposition', `attachment; filename="${filename}.csv"`);
+    res.setHeader('Content-type', 'text/csv; charset=UTF-8');
+    return res.status(200).send(fileContent);
   } catch (err) {
     next(err);
     return null;
