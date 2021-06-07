@@ -1,6 +1,3 @@
-import fs from 'fs';
-import { v4 as uuidv4 } from 'uuid';
-import path from 'path';
 import { Parser } from 'json2csv';
 import getPersistentData from './persistent-data.repository';
 import { generatePropertyValue } from './dynamic-data.service';
