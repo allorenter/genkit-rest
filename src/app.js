@@ -5,7 +5,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import 'dotenv/config';
 import mongoose from 'mongoose';
-import handleErrors from './middleware/handleErrors';
+import handleErrors from './middleware/handle-errors';
 
 // routes
 import generatedDataRouter from './modules/generated-data/generated-data.routes';

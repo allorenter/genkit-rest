@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import Forbidden from '../utils/errors/forbidden';
 
-exports.isAuth = (req, res, next) => {
+const isAuth = (req, res, next) => {
   try {
     if (!req.headers.authorization) {
       throw new Forbidden('No tienes autorización');
@@ -17,3 +17,5 @@ exports.isAuth = (req, res, next) => {
     return null;
   }
 };
+
+export default isAuth;
