@@ -1,23 +1,8 @@
 import dayjs from 'dayjs';
 import succesResponse from '../../utils/response';
 import { preview, generateJSON, generateCSV } from './generated-data.service';
-import BadRequest from '../../utils/errors/bad-request';
 import GeneratedDataModel from './generated-data.model';
-
-const validateDataSchema = (dataSchema) => {
-  if (!Array.isArray(dataSchema) || dataSchema?.length < 1) {
-    throw new BadRequest('DataSchema incorrecto');
-  }
-  const validDataSchema = dataSchema.filter(({ name, type }) => {
-    const validName = typeof name === 'string' && name !== '';
-    const validType = type.id && type.name && type.options && type.group;
-    return validName && validType;
-  });
-  if (!Array.isArray(validDataSchema) || validDataSchema?.length < 1) {
-    throw new BadRequest('ValidDataSchema incorrecto', validDataSchema);
-  }
-  return validDataSchema;
-};
+import { validateDataSchema } from '../data-schema/data-schema.service';
 
 exports.preview = async (req, res, next) => {
   try {
