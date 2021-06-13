@@ -37,7 +37,14 @@ const generateData = async (dataSchema, size) => {
           generatedObject[property.name] = persistentData[i][property.type.id];
           mainPropertyComplete[property.type.id] = true;
         } else {
-          generatedObject[property.name] = additionalPersistentData[randomNumber(0, size * 5)][property.type.id];
+          let generatedValue = '';
+          while (!generatedValue) {
+            const generatedObjectTemp = additionalPersistentData[randomNumber(0, size * 5)];
+            if (generatedObjectTemp) {
+              generatedValue = generatedObjectTemp[property.type.id];
+            }
+          }
+          generatedObject[property.name] = generatedValue;
         }
       }
       // dynamic data
