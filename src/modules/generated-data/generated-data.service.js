@@ -49,7 +49,7 @@ const generateData = async (dataSchema, size) => {
       }
       // dynamic data
       if (!persistentDataFields.includes(property.type.id)) {
-        generatedObject[property.name] = generatePropertyValue(property.type.id);
+        generatedObject[property.name] = generatePropertyValue(property);
       }
     });
 

@@ -6,13 +6,14 @@ export const validateDataSchema = (dataSchema) => {
   if (!Array.isArray(dataSchema) || dataSchema?.length < 1) {
     throw new BadRequest('DataSchema incorrecto');
   }
-  const validDataSchema = dataSchema.filter(({ name, type }) => {
+  const validDataSchema = dataSchema.filter(({ name, options, type }) => {
     const validName = typeof name === 'string' && name !== '';
-    const validType = type.id && type.name && type.options && type.group;
-    return validName && validType;
+    const validType = type.id && type.name && type.defaultOptions && type.group;
+    const validOptions = typeof options === 'object';
+    return validName && validType && validOptions;
   });
   if (!Array.isArray(validDataSchema) || validDataSchema?.length < 1) {
-    throw new BadRequest('ValidDataSchema incorrecto', validDataSchema);
+    throw new BadRequest('DataSchema inválido', validDataSchema);
   }
   return validDataSchema;
 };

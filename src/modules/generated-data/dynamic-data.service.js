@@ -15,18 +15,18 @@ export const dni = () => {
   return `${dniNumbers}${controlLetters.charAt(dniNumbers % 23)}`;
 };
 
-export const randomString = (stringLength = 8) => {
+export const randomString = ({ size = 8 }) => {
   const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
   let generatedString = '';
-  for (let i = 0; i < stringLength; i += 1) {
+  for (let i = 0; i < size; i += 1) {
     generatedString += characters.charAt(Math.round(Math.random() * (characters.length - 0) + 0));
   }
   return generatedString;
 };
 
-export const randomNumber = (min = 1, max = 10) => Math.round(Math.random() * (max - min) + min);
+export const randomNumber = ({ min = 1, max = 10 }) => Math.round(Math.random() * (max - min) + min);
 
-export const creditCard = (type = 'any') => {
+export const creditCard = ({ type = 'any' }) => {
   let part1 = '';
   switch (type) {
     case 'any':
@@ -59,9 +59,9 @@ export const matricula = () => {
 
 export const boolean = () => Math.random() >= 0.5;
 
-export const randomDate = (startDate = '2000-1-1', endDate = '2021-1-1') => {
-  const formatedStartDate = new Date(startDate);
-  const formatedEndDate = new Date(endDate);
+export const randomDate = ({ start = '2000-1-1', end = '2021-1-1' }) => {
+  const formatedStartDate = new Date(start);
+  const formatedEndDate = new Date(end);
   return new Date(formatedStartDate.getTime() + Math.random() * (formatedEndDate.getTime() - formatedStartDate.getTime()))
     .toLocaleDateString();
 };
@@ -76,17 +76,17 @@ export const carBrand = () => {
   return brands[Math.round(Math.random() * (brands.length - 0) + 0)];
 };
 
-export const generatePropertyValue = (propertyName) => {
+export const generatePropertyValue = (property) => {
   const map = {
-    mobilePhone: mobilePhone(),
+    telefonoMovil: mobilePhone(),
     dni: dni(),
-    randomString: randomString(),
-    randomNumber: randomNumber(),
-    creditCard: creditCard(),
+    cadena: randomString(property.options),
+    numero: randomNumber(property.options),
+    tarjetaCredito: creditCard(property.options),
     matricula: matricula(),
     boolean: boolean(),
-    randomDate: randomDate(),
-    carBrand: carBrand(),
+    fecha: randomDate(property.options),
+    marcaCoche: carBrand(),
   };
-  return map[propertyName];
+  return map[property.type.id];
 };
