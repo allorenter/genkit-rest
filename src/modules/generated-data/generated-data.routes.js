@@ -6,8 +6,8 @@ const router = express.Router();
 
 router.post('/preview', GeneratedDataController.preview);
 
-router.post('/generate-json', isAuth, GeneratedDataController.generateJSON);
+router.post('/generate-json', GeneratedDataController.generateJSON);
 
-router.post('/generate-csv', isAuth, GeneratedDataController.generateCSV);
+router.post('/generate-csv', GeneratedDataController.generateCSV);
 
 export default router;

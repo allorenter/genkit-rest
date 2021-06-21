@@ -27,7 +27,7 @@ exports.generateJSON = async (req, res, next) => {
 
     const log = new GeneratedDataModel({
       date: dayjs().format(),
-      user: req.payload.userName,
+      user: req?.payload?.userName || '',
       filename,
       fileExtension: 'json',
     });
@@ -51,7 +51,7 @@ exports.generateCSV = async (req, res, next) => {
 
     const log = new GeneratedDataModel({
       date: dayjs().format(),
-      user: req.payload.userName,
+      user: req?.payload?.userName || '',
       filename,
       fileExtension: 'csv',
     });
