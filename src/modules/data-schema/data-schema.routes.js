@@ -8,4 +8,6 @@ router.post('/save', isAuth, DataSchemaController.saveDataSchema);
 
 router.get('/get', isAuth, DataSchemaController.getDataSchemas);
 
+router.delete('/delete/:id', isAuth, DataSchemaController.deleteDataSchema);
+
 export default router;

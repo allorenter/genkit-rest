@@ -9,7 +9,7 @@ exports.preview = async (req, res, next) => {
     const { dataSchema, size } = req.body;
     const previewData = await preview(
       validateDataSchema(dataSchema),
-      size,
+      size || 10,
     );
     return succesResponse(res, 'Vista previa de objetos generados', { previewData });
   } catch (err) {

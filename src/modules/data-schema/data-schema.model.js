@@ -7,6 +7,6 @@ const DataSchemaSchema = new Schema({
   name: String,
   user: String,
   schema: Array,
-});
+}, { minimize: false });
 
 export default mongoose.model('data-schema', DataSchemaSchema);
